@@ -40,7 +40,7 @@ void Window::clear()
 void Window::display() 
 {
 	if (m_window != nullptr) {
-		m_window->clear();
+		m_window->display();
 	}
 	else {
 		ERROR("Window", "display", "CHECK FOR WINDOW PONTER DATA");
@@ -77,4 +77,9 @@ sf::RenderWindow* Window::getWindow()
 		return nullptr;
 		ERROR("Window", "getWidow", "CHECK FOR WINDOW PONTER DATA");
 	}
+}
+
+void Window::destroy()
+{
+	SAFE_PTR_RELEASE(m_window);
 }

@@ -3,9 +3,9 @@
 int BaseApp::run()
 {
     initialize();
-    while (window->isOpen())
+    while (m_window->isOpen())
     {
-        handleEvents();
+        m_window->handleEvents();
         updapte();
         render();
     }
@@ -15,30 +15,23 @@ int BaseApp::run()
 }
 
 void BaseApp::initialize(){
-    window = new sf::RenderWindow(sf::VideoMode(800, 600), "SFML-MAGIC-009");
+    m_window = new Window(800, 600, "SFML-MAGIC-009");
     shape = new sf::CircleShape(100.0f);
     shape->setFillColor(sf::Color::Green);
-}
-
-void BaseApp::handleEvents(){
-    sf::Event event;
-    while (window->pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-            window->close();
-    }
 }
 
 void BaseApp::updapte(){
 }
 
 void BaseApp::render(){
-    window->clear();
-    window->draw(*shape);
-    window->display();
+    m_window->getWindow();
+    m_window->draw(*shape);
+    m_window->display();
 }
 
-void BaseApp::clenaup(){
-    delete window;
+void BaseApp::clenaup()
+{
+    m_window->destroy();
+    delete m_window;
     delete shape;
 }

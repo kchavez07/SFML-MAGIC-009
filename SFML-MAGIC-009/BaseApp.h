@@ -1,5 +1,8 @@
 #pragma once
+#include "Prerequisites.h"
+#include "Window.h"
 #include <SFML/Graphics.hpp>
+
 class BaseApp
 {
 public:
@@ -12,9 +15,6 @@ public:
     //Funcion de inicializacion
     void initialize();
 
-    //Funcion de manejo de datos
-    void handleEvents();
-
     //Funcion que se actualiza por frame
     void updapte();
 
@@ -25,9 +25,8 @@ public:
     void clenaup();
 
 private:
-	sf::RenderWindow* window;
-	sf::CircleShape* shape;
-
+    Window* m_window;
+    sf::CircleShape* shape;
 };
 
 

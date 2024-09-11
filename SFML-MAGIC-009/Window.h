@@ -37,6 +37,7 @@ public:
 
 	//Funcion de renderizado 
 	void render();
+
 	void destroy();
 
 private:
