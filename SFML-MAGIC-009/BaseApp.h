@@ -2,6 +2,7 @@
 #include "Prerequisites.h"
 #include "Window.h"
 #include <SFML/Graphics.hpp>
+#include "ShapeFactory.h"
 
 class BaseApp
 {
@@ -13,7 +14,7 @@ public:
     int run();
 
     //Funcion de inicializacion
-    void initialize();
+    bool initialize();
 
     //Funcion que se actualiza por frame
     void updapte();
@@ -27,6 +28,8 @@ public:
 private:
     Window* m_window;
     sf::CircleShape* shape;
+    ShapeFactory m_shapeFactory;
+    sf::Shape* Triangulo;
 };
 
 
