@@ -34,12 +34,12 @@ bool BaseApp::initialize(){
     shape->setFillColor(sf::Color::Blue);
     shape->setPosition(200.0f, 200.0f);
 
-    Triangulo = m_shapeFactory.createShape(ShapeType::TRIANGLE);
-    if (!Triangulo) 
-    {
-        ERROR("BaseApp", "initialize", "Error on triangulo creation, var is null");
-        return false;
-    }
+    //Triangulo = m_shapeFactory.createShape(ShapeType::TRIANGLE);
+    //if (!Triangulo) 
+    //{
+    //    ERROR("BaseApp", "initialize", "Error on triangulo creation, var is null");
+    //    return false;
+    //}
 
     return true;
 }
@@ -50,7 +50,7 @@ void BaseApp::updapte(){
 void BaseApp::render(){
     m_window->getWindow();
     m_window->draw(*shape);
-    m_window->draw(*Triangulo);
+    //m_window->draw(*Triangulo);
     m_window->display();
 }
 
@@ -59,5 +59,5 @@ void BaseApp::clenaup()
     m_window->destroy();
     delete m_window;
     delete shape;
-    delete Triangulo;
+    //delete Triangulo;
 }

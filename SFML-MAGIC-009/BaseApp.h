@@ -28,7 +28,7 @@ public:
 private:
     Window* m_window;
     sf::CircleShape* shape;
-    ShapeFactory m_shapeFactory;
+    //ShapeFactory m_shapeFactory;
     sf::Shape* Triangulo;
 };
 

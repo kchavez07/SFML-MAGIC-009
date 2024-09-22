@@ -169,13 +169,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="BaseApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShapeFactory.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\Memory\TSharedPointer.h" />
+    <ClInclude Include="..\Include\Memory\TStaticPtr.h" />
+    <ClInclude Include="..\Include\Memory\TUniquePtr.h" />
+    <ClInclude Include="..\Include\Memory\TWeakPointer.h" />
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="BaseApp.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Prerequisites.h" />
     <ClInclude Include="ShapeFactory.h" />
     <ClInclude Include="Window.h" />

@@ -9,14 +9,18 @@
 
 // Third Parties 
 #include <SFML/Graphics.hpp>
+#include "../Include/Memory/TWeakPointer.h"
+#include "../Include/Memory/TSharedPointer.h"
+#include "../Include/Memory/TStaticPtr.h"
+#include "../Include/Memory/TUniquePtr.h"
 
 // ENUMS
 enum ShapeType 
 {
-    CIRCLE = 0,
-    RECTANGLE = 1,
-    TRIANGLE = 2,
-
+    EMPTY = 0,
+    CIRCLE = 1,
+    RECTANGLE = 2,
+    TRIANGLE = 3,
 };
 
 // MACRO for safe release of resources
