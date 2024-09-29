@@ -17,7 +17,7 @@ public:
 //@brief Metodo Virtual puro poara renderizar la entidad
 //@param deltaTime El tiempo transcurrido desde la ultima actualizacion
 	virtual void
-		render(Window window) = 0;
+		render(Window& window) = 0;
 
 //@brief Agrega un componente a la entidad
 //@Tparam T tipo del component, debe derivar de Comnponet
@@ -26,7 +26,7 @@ public:
 	void addComponent(EngineUtilities::TSharedPointer<T>component)
 	{
 		static_assert(std::is_base_of_<Component, T>::value, "T must be derivedfrom Component");
-		components.push_back(component);
+		components.push_back(component.template dynamic_pointer_cast<Component>());
 	}
 
 //@brief Obtiene un componente de la entidad
@@ -35,17 +35,17 @@ public:
 
 	template<typename T>
 	EngineUtilities::TSharedPointer<T>
-	getComponet() 
+		getComponent() 
 	{
 		for (auto& component : components) 
 		{
-			EngineUtilities::TSharedPointer<T> specificComponent = std::dynamic_pointer_cast<T>(component);
+			EngineUtilities::TSharedPointer<T> specificComponent = component.template dynamic_pointer_cast<T>();
 			if (specificComponent) 
 			{
 				return specificComponent;
 			}
 		}
-		return nullptr;
+		return EngineUtilities::TSharedPointer<T>();
 	}
 
 protected:

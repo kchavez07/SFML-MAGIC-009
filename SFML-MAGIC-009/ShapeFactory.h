@@ -22,9 +22,14 @@ class ShapeFactory : public Component
 //@brief Renderiza el componente de malla
 //@param deltaTime El tiempo transcurrido desde la ultima actualizacion
 	void render(Window window) override{}
+	sf::Shape* getShape() 
+	{
+		return m_shape;
+	}
 
+public:
+	sf::Shape* m_shape;
 
- private:
-	 sf::Shape* m_shape;
+private:
 	 ShapeType m_shapeType;
 };

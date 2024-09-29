@@ -1,4 +1,6 @@
+#include "Actor.h"
 #include "BaseApp.h"
+
 
 int BaseApp::run()
 {
@@ -18,15 +20,17 @@ int BaseApp::run()
     return 0;
 }
 
-bool BaseApp::initialize(){
-    m_window = new Window(800, 600, "SFML-MAGIC-009");
-    if (!m_window) {
+bool BaseApp::initialize()
+{
+    m_window = new Window(800, 600, "Galvan Engine");
+    if (!!m_window)
+    {
         ERROR("BaseApp", "initialize", "Error on window creation, var is null");
         return false;
     }
-
     shape = new sf::CircleShape(10.0f);
-    if (!shape) {
+    if (!shape) 
+    {
         ERROR("BaseApp", "initialize", "Error on shape creation, var is null");
         return false;
     }
@@ -34,23 +38,29 @@ bool BaseApp::initialize(){
     shape->setFillColor(sf::Color::Blue);
     shape->setPosition(200.0f, 200.0f);
 
-    //Triangulo = m_shapeFactory.createShape(ShapeType::TRIANGLE);
-    //if (!Triangulo) 
-    //{
-    //    ERROR("BaseApp", "initialize", "Error on triangulo creation, var is null");
-    //    return false;
-    //}
+//Triangle Actor
+Triangle = EngineUtilities::MakeShared<Actor>("Triangle");
+if (!Triangle.isNull()) 
+{
+    Triangle->getComponent<ShapeFactory>()->createShape(ShapeType::TRIANGLE);
+    Triangle->getComponent<ShapeFactory>()->getShape()->setFillColor(sf::Color::Blue);
+}
 
-    return true;
+return true;
 }
 
 void BaseApp::updapte(){
 }
 
-void BaseApp::render(){
-    m_window->getWindow();
+void BaseApp::render()
+{
+    m_window->clear();
     m_window->draw(*shape);
-    //m_window->draw(*Triangulo);
+    Triangle->render(*m_window);
+    /*if (!Triangle.isNull()) {
+    }
+    m_window->draw(*Triangle->getComponent<ShapeFactory>()->getShape());*/
+
     m_window->display();
 }
 
@@ -59,5 +69,4 @@ void BaseApp::clenaup()
     m_window->destroy();
     delete m_window;
     delete shape;
-    //delete Triangulo;
 }
