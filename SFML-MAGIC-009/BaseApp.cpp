@@ -1,72 +1,82 @@
 #include "Actor.h"
 #include "BaseApp.h"
 
-
 int BaseApp::run()
 {
-    if (initialize())
+    if (!initialize())
     {
-        ERROR("BaseApp", "run", "initializes result on a false statement, check method validations.")
+        ERROR("BaseApp", "run", "Initializes result on a false statement, check method validations.");
     }
-    //initialize();
+
     while (m_window->isOpen())
     {
-        m_window->handleEvents();
-        updapte();
-        render();
+        m_window->handleEvents();  // Manejar eventos de la ventana
+
+        // Parte exacta del código según la captura:
+        deltaTime = Clock.restart();  // Calcular deltaTime usando Clock.restart()
+
+        update();  // Llamar a `update` (sin parámetros si es como la versión que mostraste)
+        render();  // Renderizar los objetos en la pantalla
     }
-    clenaup();
+
+    cleanup();
 
     return 0;
 }
 
+
 bool BaseApp::initialize()
 {
-    m_window = new Window(800, 600, "Galvan Engine");
-    if (!!m_window)
+    m_window = new Window(800, 600, "SFML-MAGIC-009");
+    if (m_window == nullptr)
     {
         ERROR("BaseApp", "initialize", "Error on window creation, var is null");
         return false;
     }
-    shape = new sf::CircleShape(10.0f);
-    if (!shape) 
+
+    // Círculo Actor
+    Circle = EngineUtilities::MakeShared<Actor>("Circle");
+    if (!Circle.isNull())
     {
-        ERROR("BaseApp", "initialize", "Error on shape creation, var is null");
-        return false;
+        Circle->getComponent<ShapeFactory>()->createShape(ShapeType::CIRCLE);
+        Circle->getComponent<ShapeFactory>()->setPosition(200.0f, 200.0f);
+        Circle->getComponent<ShapeFactory>()->getShape()->setFillColor(sf::Color::Blue);
     }
 
-    shape->setFillColor(sf::Color::Blue);
-    shape->setPosition(200.0f, 200.0f);
+    // Triángulo Actor
+    Triangle = EngineUtilities::MakeShared<Actor>("Triangle");
+    if (!Triangle.isNull())
+    {
+        Triangle->getComponent<ShapeFactory>()->createShape(ShapeType::TRIANGLE);
+    }
 
-//Triangle Actor
-Triangle = EngineUtilities::MakeShared<Actor>("Triangle");
-if (!Triangle.isNull()) 
+    return true;
+}
+
+void BaseApp::update()
 {
-    Triangle->getComponent<ShapeFactory>()->createShape(ShapeType::TRIANGLE);
-    Triangle->getComponent<ShapeFactory>()->getShape()->setFillColor(sf::Color::Blue);
-}
+    // Mouse Position
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(*m_window->getWindow());
+    sf::Vector2f mousePosF(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
 
-return true;
-}
-
-void BaseApp::updapte(){
+    if (!Circle.isNull())
+    {
+        Circle->getComponent<ShapeFactory>()->Seek(mousePosF, 200.0f, deltaTime.asSeconds(), 10.0f); 
+    }
 }
 
 void BaseApp::render()
 {
-    m_window->clear();
-    m_window->draw(*shape);
-    Triangle->render(*m_window);
-    /*if (!Triangle.isNull()) {
-    }
-    m_window->draw(*Triangle->getComponent<ShapeFactory>()->getShape());*/
-
-    m_window->display();
+    m_window->clear();  // Limpiar la pantalla
+    Circle->render(*m_window);  // Renderizar el círculo
+    Triangle->render(*m_window);  // Renderizar el triángulo
+    m_window->display();  // Mostrar el contenido de la ventana
 }
 
-void BaseApp::clenaup()
+
+void BaseApp::cleanup()
 {
     m_window->destroy();
     delete m_window;
-    delete shape;
+    
 }

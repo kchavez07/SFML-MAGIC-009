@@ -17,11 +17,20 @@ class ShapeFactory : public Component
 
 //@brief Actualiza el component de malla
 //@param deltaTime El tiempo transcurrido desde la ultima actualizacion
-    void update(float deltaTime) override{}
+	void update(float deltaTime) override;
 
 //@brief Renderiza el componente de malla
-//@param deltaTime El tiempo transcurrido desde la ultima actualizacion
-	void render(Window window) override{}
+//@param deviceContext Contexto del dispositivo para operaciones Graficas
+	void render(Window& window) override;
+	void setPosition(float x, float y);
+	void setPosition(const sf::Vector2f& position);
+	void setFillColor(const sf::Color& color);
+
+	void Seek(const sf::Vector2f& targetPosition, float speed, float deltaTime, float range);
+
+
+
+
 	sf::Shape* getShape() 
 	{
 		return m_shape;
@@ -29,7 +38,6 @@ class ShapeFactory : public Component
 
 public:
 	sf::Shape* m_shape;
-
 private:
 	 ShapeType m_shapeType;
 };

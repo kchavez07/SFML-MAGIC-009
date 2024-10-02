@@ -40,3 +40,48 @@ case CIRCLE:
 	  return nullptr;
    } 
 }
+
+void ShapeFactory::setPosition(float x, float y)
+{
+	m_shape->setPosition(x, y);
+}
+
+void ShapeFactory::setPosition(const sf::Vector2f& position)
+{
+	m_shape->setPosition(position);
+}
+
+void ShapeFactory::setFillColor(const sf::Color& color)
+{
+	m_shape->setFillColor(color);
+}
+
+void ShapeFactory::Seek(const sf::Vector2f& targetPosition, float speed, float deltaTime, float range)
+{// Obtener la posicion actual de mi shape
+	sf::Vector2f shapePosition = m_shape->getPosition();
+
+ // Calcular la direccion desde el circulo hacia el obejtivo 
+	sf::Vector2f direction = targetPosition - shapePosition;
+
+ // Calcular la distancia al objetivo
+	float lenght = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+ // Si la distancia es mayor que el rango, mover la shape hacia el objetivo
+	if (lenght > range) {
+		direction /= lenght;
+		m_shape->move(direction * speed * deltaTime);
+	}
+}
+
+void ShapeFactory::update(float deltaTime)
+{
+}
+
+void ShapeFactory::render(Window& window)
+{
+	if (m_shape != nullptr) 
+	{
+		window.draw(*m_shape); 
+	}
+}
+

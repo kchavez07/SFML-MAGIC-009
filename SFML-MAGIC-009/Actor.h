@@ -20,7 +20,7 @@ public:
 
 //@brief Renderiza el actor 
 //@param window Contexto del dispositivo para operaciones graficas
-	void render(Window window) override;
+	void render(Window& window) override;
 
 //@brief Destruye el actor y libera los recuersos asociados
 	void destroy();

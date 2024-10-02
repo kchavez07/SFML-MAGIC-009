@@ -83,3 +83,17 @@ void Window::destroy()
 {
 	SAFE_PTR_RELEASE(m_window);
 }
+
+void Window::init()
+{
+}
+
+void Window::updapte()
+{
+}
+
+void Window::render()
+{
+}
+
+
