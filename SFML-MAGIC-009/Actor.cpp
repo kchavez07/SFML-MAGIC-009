@@ -6,6 +6,7 @@
  * Implementación de la clase `Actor`. Esta clase representa cualquier entidad gráfica en el juego
  * que puede tener múltiples componentes como formas, transformaciones y comportamientos específicos.
  * Cada actor tiene la capacidad de actualizarse y renderizarse, así como almacenar y gestionar múltiples componentes.
+ * Se ha agregado la clase `Transform` para manejar la posición, rotación y escala de los actores de manera eficiente.
  */
 
  // Constructor que inicializa un actor con un nombre específico.
@@ -35,8 +36,17 @@ Actor::Actor(std::string actorName)
 // Este parámetro es útil para realizar animaciones y cálculos basados en tiempo real.
 void Actor::update(float deltaTime)
 {
-    // Esta función está vacía en esta implementación porque el actor actualmente no tiene lógica específica.
-    // Se puede utilizar para mover al actor, cambiar sus propiedades o ejecutar comportamientos adicionales.
+    // Obtener el componente de transformaciones y el de forma del actor
+    auto transform = getComponent<Transform>();
+    auto shape = getComponent<ShapeFactory>();
+
+    // Actualizar la posición, rotación y escala del actor si ambos componentes están presentes
+    if (transform && shape)
+    {
+        shape->setPosition(transform->getPosition());   // Actualiza la posición de la forma basada en el componente de Transform
+        shape->setRotation(transform->getRotation());   // Actualiza la rotación de la forma
+        shape->setScale(transform->getScale());         // Actualiza la escala de la forma
+    }
 }
 
 // Renderiza todos los componentes gráficos del actor en la ventana especificada.
@@ -49,7 +59,7 @@ void Actor::render(Window& window)
     {
         // `dynamic_pointer_cast` se usa para convertir de manera segura el componente a `ShapeFactory`.
         // Si la conversión es exitosa, se dibuja la forma correspondiente.
-        if (components[i].dynamic_pointer_cast<ShapeFactory>()) 
+        if (components[i].dynamic_pointer_cast<ShapeFactory>())
         {
             window.draw(*components[i].dynamic_pointer_cast<ShapeFactory>()->getShape());
         }

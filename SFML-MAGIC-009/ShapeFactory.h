@@ -57,6 +57,14 @@ public:
     // @param range Distancia mínima para detenerse (evita que la forma se pase del objetivo).
     void Seek(const sf::Vector2f& targetPosition, float speed, float deltaTime, float range);
 
+    // Establece la rotación de la forma en grados.
+    // @param angle Ángulo de rotación en grados.
+    void setRotation(float angle);
+
+    // Establece la escala de la forma.
+    // @param scl Vector con los valores de escala en X e Y.
+    void setScale(const sf::Vector2f& scl);
+
     // Devuelve un puntero a la forma creada.
     // Esto se usa para interactuar directamente con la forma (por ejemplo, cambiar su tamaño o color).
     // @return Un puntero a la forma (`sf::Shape*`).

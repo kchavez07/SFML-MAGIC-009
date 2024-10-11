@@ -37,7 +37,7 @@ sf::Shape* ShapeFactory::createShape(ShapeType shapeType)
     case RECTANGLE:
     {
         // Crear un rectángulo de 100x50 píxeles y color blanco.
-        sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2(100.0f, 50.0f));
+        sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(100.0f, 50.0f));
         rectangle->setFillColor(sf::Color::White);
         m_shape = rectangle;
         return rectangle;
@@ -62,14 +62,40 @@ sf::Shape* ShapeFactory::createShape(ShapeType shapeType)
 // @param y Posición en el eje Y.
 void ShapeFactory::setPosition(float x, float y)
 {
-    m_shape->setPosition(x, y);
+    if (m_shape)
+    {
+        m_shape->setPosition(x, y);
+    }
 }
 
 // Otra forma de establecer la posición, pero usando un vector 2D (más práctico a veces).
 // @param position Un vector con las coordenadas X e Y.
 void ShapeFactory::setPosition(const sf::Vector2f& position)
 {
-    m_shape->setPosition(position);
+    if (m_shape)
+    {
+        m_shape->setPosition(position);
+    }
+}
+
+// Establece la rotación de la forma.
+// @param angle Ángulo de rotación en grados.
+void ShapeFactory::setRotation(float angle)
+{
+    if (m_shape)
+    {
+        m_shape->setRotation(angle);
+    }
+}
+
+// Establece la escala de la forma usando un vector 2D (X e Y).
+// @param scl Vector que contiene la escala para los ejes X e Y.
+void ShapeFactory::setScale(const sf::Vector2f& scl)
+{
+    if (m_shape)
+    {
+        m_shape->setScale(scl);
+    }
 }
 
 // Cambia el color de la forma.
@@ -110,6 +136,7 @@ void ShapeFactory::Seek(const sf::Vector2f& targetPosition, float speed, float d
 // @param deltaTime El tiempo transcurrido desde la última actualización.
 void ShapeFactory::update(float deltaTime)
 {
+    // Aquí se podrían incluir actualizaciones adicionales si se necesitaran.
 }
 
 // Renderiza la forma en la ventana dada.
