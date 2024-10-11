@@ -186,6 +186,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Prerequisites.h" />
     <ClInclude Include="ShapeFactory.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

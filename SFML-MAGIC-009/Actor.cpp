@@ -3,45 +3,64 @@
 
 /*
  * Actor.cpp
- * Implementación de la clase `Actor`. Aquí es donde se definen los detalles de lo que hace un actor.
- * El actor puede tener diferentes componentes (como formas, sprites, transformaciones, etc.)
- * y se encarga de actualizarlos y dibujarlos en la pantalla según se necesite.
+ * Implementación de la clase `Actor`. Esta clase representa cualquier entidad gráfica en el juego
+ * que puede tener múltiples componentes como formas, transformaciones y comportamientos específicos.
+ * Cada actor tiene la capacidad de actualizarse y renderizarse, así como almacenar y gestionar múltiples componentes.
  */
 
  // Constructor que inicializa un actor con un nombre específico.
- // Aquí es donde configuramos el nombre y agregamos los componentes iniciales al actor.
- // @param actorName El nombre del actor (puede ser cualquier cadena, como "Jugador1" o "Enemigo").
+ // Aquí se define el nombre del actor y se agregan componentes básicos como `ShapeFactory` y `Transform`.
+ // @param actorName Nombre del actor que será utilizado para su identificación.
 Actor::Actor(std::string actorName)
 {
-    // Guardamos el nombre del actor para identificarlo más fácilmente.
+    // Guardamos el nombre del actor para identificarlo fácilmente durante el desarrollo y la depuración.
     m_name = actorName;
 
-    // Creamos un componente de tipo `ShapeFactory` para manejar formas geométricas.
+    // Creación del componente `ShapeFactory` que se encargará de definir las formas geométricas del actor.
     EngineUtilities::TSharedPointer<ShapeFactory> shape = EngineUtilities::MakeShared<ShapeFactory>();
-    addComponent(shape);  // Lo añadimos a la lista de componentes del actor.
+    addComponent(shape);  // Añadimos `ShapeFactory` a la lista de componentes del actor.
 
-    // Aquí podríamos añadir otros componentes, como Transform, Sprite, etc.
-    // Actualmente solo se agrega el componente `Shape` por simplicidad.
+    // Creación del componente `Transform` que gestiona la posición, rotación y escala del actor.
+    // Este componente permite manipular las transformaciones espaciales del actor.
+    EngineUtilities::TSharedPointer<Transform> transform = EngineUtilities::MakeShared<Transform>();
+    addComponent(transform);  // Agregamos el componente `Transform` al actor para manejar sus transformaciones.
+
+    // Actualmente, el actor solo tiene dos componentes: `ShapeFactory` y `Transform`.
+    // En el futuro, se pueden agregar otros componentes como `Sprite`, `Physics`, `AudioSource`, etc.,
+    // para extender el comportamiento del actor según sea necesario.
 }
 
-// Se llama cada frame para actualizar el actor.
-// @param deltaTime El tiempo transcurrido desde la última actualización (por ahora no se usa).
+// Función `update` que se llama en cada frame para actualizar la lógica interna del actor.
+// @param deltaTime El tiempo transcurrido desde la última actualización.
+// Este parámetro es útil para realizar animaciones y cálculos basados en tiempo real.
 void Actor::update(float deltaTime)
 {
-    // Actualmente, esta función está vacía porque no se ha definido ningún comportamiento específico para los actores.
-    // Aquí podríamos manejar la lógica de movimiento, animaciones, o reacciones del actor.
+    // Esta función está vacía en esta implementación porque el actor actualmente no tiene lógica específica.
+    // Se puede utilizar para mover al actor, cambiar sus propiedades o ejecutar comportamientos adicionales.
 }
 
-// Renderiza todos los componentes gráficos del actor en la ventana.
-// @param window Referencia a la ventana donde se dibujarán las formas del actor.
+// Renderiza todos los componentes gráficos del actor en la ventana especificada.
+// @param window Referencia a la ventana donde se dibujarán los componentes gráficos del actor.
 void Actor::render(Window& window)
 {
-    // Recorremos todos los componentes asociados al actor y dibujamos los que son de tipo `Shape`.
+    // Recorremos todos los componentes asociados al actor y verificamos si son de tipo `ShapeFactory`.
+    // Si lo son, obtenemos la forma (`Shape`) y la dibujamos en la ventana.
     for (unsigned int i = 0; i < components.size(); i++)
     {
-        // Intentamos convertir cada componente a `ShapeFactory` para poder obtener la forma y dibujarla.
-        window.draw(*components[i].dynamic_pointer_cast<ShapeFactory>()->getShape());
+        // `dynamic_pointer_cast` se usa para convertir de manera segura el componente a `ShapeFactory`.
+        // Si la conversión es exitosa, se dibuja la forma correspondiente.
+        if (components[i].dynamic_pointer_cast<ShapeFactory>()) 
+        {
+            window.draw(*components[i].dynamic_pointer_cast<ShapeFactory>()->getShape());
+        }
     }
 }
 
-// Destruye el actor y libera todos
+// Destruye el actor y libera todos los recursos asociados a sus componentes.
+// La liberación de recursos es crucial para evitar fugas de memoria y mantener el rendimiento del juego.
+// En esta implementación, la gestión de memoria se realiza de manera automática gracias a los punteros inteligentes.
+void Actor::destroy()
+{
+    // Esta función está preparada para liberar cualquier recurso adicional si es necesario.
+    // Actualmente, no es necesario liberar manualmente los componentes porque se manejan con `TSharedPointer`.
+}

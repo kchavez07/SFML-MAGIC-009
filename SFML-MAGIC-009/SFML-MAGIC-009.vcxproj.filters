@@ -68,5 +68,8 @@
     <ClInclude Include="..\Include\Memory\TWeakPointer.h">
       <Filter>Archivos de encabezado\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
