@@ -1,49 +1,100 @@
 #pragma once
+#include "Prerequisites.h"  // Importa las dependencias necesarias.
+#include "Window.h"  // Maneja la ventana principal donde se renderiza el contenido.
+#include "ShapeFactory.h"  // Provee utilidades para crear formas geométricas.
+#include "Actor.h"  // Define los actores que se dibujarán en pantalla.
 
-#include "Prerequisites.h"
-#include "Window.h"
-#include "Actor.h"
-
-// @class BaseApp
-// @brief Clase principal que controla el flujo de la aplicación.
-// Esta clase se encarga de gestionar la ventana, los actores (como el círculo y el triángulo),
-// y las funciones de renderizado, actualización y liberación de recursos.
-class BaseApp
-{
+/**
+ * @class BaseApp
+ * @brief Clase principal que controla el flujo de la aplicación.
+ *
+ * Esta clase gestiona la ventana, los actores (como el triángulo, círculo y pista),
+ * y contiene la lógica para la actualización, renderizado, movimiento y liberación de recursos.
+ */
+class BaseApp {
 public:
-    BaseApp() = default;  // Constructor por defecto.
-    ~BaseApp() = default;  // Destructor por defecto.
+    /**
+     * @brief Constructor por defecto.
+     *
+     * No realiza ninguna inicialización adicional en este caso.
+     */
+    BaseApp() = default;
 
-    // @brief Función principal de ejecución de la aplicación.
-    // Se encarga de llamar a la inicialización, el bucle de actualización y renderizado,
-    // y finalmente liberar recursos cuando la aplicación finaliza.
-    // @return Código de salida (normalmente 0 si todo sale bien).
+    /**
+     * @brief Destructor por defecto.
+     *
+     * No se realizan liberaciones manuales, ya que se usan punteros inteligentes.
+     */
+    ~BaseApp() = default;
+
+    /**
+     * @brief Ejecuta la aplicación desde la función principal.
+     *
+     * Llama a las funciones de inicialización, actualización por frame, renderizado
+     * y liberación de recursos al final de la ejecución.
+     * @return int Código de salida (0 si todo salió bien).
+     */
     int run();
 
-    // @brief Función de inicialización.
-    // Aquí se crean la ventana principal y los actores (como el círculo y el triángulo).
-    // También se define su posición y apariencia inicial.
-    // @return true si la inicialización fue exitosa, false si hubo algún error.
+    /**
+     * @brief Inicializa los recursos necesarios para la aplicación.
+     *
+     * Crea la ventana principal y los actores, estableciendo sus posiciones iniciales.
+     * @return true Si la inicialización fue exitosa, false en caso de error.
+     */
     bool initialize();
 
-    // @brief Función de actualización que se llama en cada frame.
-    // Aquí se implementa la lógica que cambia cada vez que avanza el tiempo (como el movimiento).
-    // Realiza el seguimiento del ratón y el movimiento entre los puntos predeterminados.
+    /**
+     * @brief Actualiza la lógica de la aplicación en cada frame.
+     *
+     * Se encarga de gestionar el movimiento de los actores, el seguimiento del ratón,
+     * y cualquier otra actualización requerida por frame.
+     */
     void update();
 
-    // @brief Función de renderizado que dibuja los elementos en la pantalla.
-    // Se llama en cada frame después de la actualización para mostrar los actores.
+    /**
+     * @brief Renderiza los actores en la ventana.
+     *
+     * Dibuja los actores en la pantalla en cada frame después de la actualización.
+     */
     void render();
 
-    // @brief Función de limpieza que libera los recursos y destruye la ventana.
-    // Es la última función que se ejecuta cuando la aplicación está cerrando.
+    /**
+     * @brief Libera los recursos utilizados por la aplicación.
+     *
+     * Se encarga de limpiar la memoria y liberar los recursos al cerrar la aplicación.
+     */
     void cleanup();
 
-private:
-    Window* m_window;  // Puntero a la ventana principal donde se dibuja todo el contenido.
-    EngineUtilities::TSharedPointer<Actor> Triangle;  // Actor que representa el triángulo blanco.
-    EngineUtilities::TSharedPointer<Actor> Circle;  // Actor que representa el círculo azul.
+    /**
+     * @brief Actualiza el movimiento del círculo entre waypoints.
+     *
+     * Si el ratón no está cerca, el círculo se moverá automáticamente entre los waypoints.
+     * @param deltaTime Tiempo entre frames utilizado para calcular el movimiento.
+     * @param circle Puntero inteligente al actor del círculo.
+     */
+    void updateMovement(float deltaTime, EngineUtilities::TSharedPointer<Actor> circle);
 
-    sf::Clock Clock;  // Reloj para medir el tiempo entre frames (deltaTime).
-    sf::Time deltaTime;  // Almacena el tiempo transcurrido entre el último frame y el actual.
+private:
+    Window* m_window;  ///< Puntero a la ventana principal de la aplicación.
+
+    EngineUtilities::TSharedPointer<Actor> Triangle;  ///< Actor que representa el triángulo.
+    EngineUtilities::TSharedPointer<Actor> Circle;    ///< Actor que representa el círculo.
+    EngineUtilities::TSharedPointer<Actor> Track;     ///< Actor que representa la pista.
+
+    int currentWaypoint = 0;  ///< Índice del waypoint actual en la trayectoria del círculo.
+    bool isFollowingMouse = false;  ///< Indica si el círculo está siguiendo al ratón.
+
+    /**
+     * @brief Lista de waypoints que el círculo seguirá.
+     *
+     * Cada waypoint es un `sf::Vector2f` que representa una posición en la ventana.
+     */
+    std::vector<sf::Vector2f> waypoints = {
+        {720.0f, 350.0f}, {720.0f, 260.0f}, {125.0f, 50.0f},
+        {70.0f, 120.0f}, {70.0f, 450.0f}, {400.0f, 350.0f},
+        {550.0f, 500.0f}, {650.0f, 550.0f}, {720.0f, 450.0f}
+    };
+
+    sf::Texture texture;  ///< Textura para renderizar los actores o la pista.
 };

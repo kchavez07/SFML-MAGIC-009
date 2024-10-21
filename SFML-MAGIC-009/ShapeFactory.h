@@ -1,81 +1,114 @@
 #pragma once
-#include "Prerequisites.h"
-#include "Component.h"
-#include "Window.h"
+#include "Prerequisites.h"  // Incluye dependencias esenciales.
+#include "Component.h"       // Define la clase base Component.
+#include "Window.h"          // Clase para gestionar la ventana principal.
 
-/*
- * ShapeFactory.h
- * Esta clase es como una "fábrica de formas". Se encarga de crear y manejar formas geométricas
- * (como círculos, triángulos y rectángulos) para que se puedan dibujar en la ventana.
- * Cada forma puede tener un color, una posición y ciertas interacciones.
+/**
+ * @class ShapeFactory
+ * @brief Fábrica de formas geométricas.
+ *
+ * La clase `ShapeFactory` permite la creación y gestión de formas geométricas como círculos,
+ * rectángulos y triángulos. Además, facilita la manipulación de propiedades como posición,
+ * color, rotación y escala de dichas formas, y su posterior renderizado en la ventana.
  */
-class ShapeFactory : public Component
-{
+class ShapeFactory : public Component {
 public:
-    // Constructor por defecto (no hace nada especial, solo inicializa la clase sin parámetros).
+    /**
+     * @brief Constructor por defecto.
+     *
+     * Inicializa la clase sin realizar ninguna acción adicional.
+     */
     ShapeFactory() = default;
 
-    // Destructor para liberar la memoria y recursos asociados.
+    /**
+     * @brief Destructor virtual por defecto.
+     *
+     * Se asegura que cualquier recurso asignado por las clases hijas
+     * sea liberado correctamente.
+     */
     virtual ~ShapeFactory() = default;
 
-    // Constructor que inicializa la fábrica con un tipo de forma específico.
-    // Por ejemplo, puedes crear un ShapeFactory que solo maneje círculos o triángulos.
-    // @param shapeType Tipo de forma que manejará la fábrica (Círculo, Triángulo, etc.)
-    ShapeFactory(ShapeType shapeType) :
-        m_shape(nullptr), m_shapeType(ShapeType::EMPTY), Component(ComponentType::SHAPE) {};
+    /**
+     * @brief Constructor parametrizado.
+     *
+     * Inicializa la fábrica con un tipo específico de forma a gestionar.
+     *
+     * @param shapeType Tipo de forma que será creada (CIRCLE, RECTANGLE, etc.).
+     */
+    ShapeFactory(ShapeType shapeType);
 
-    // Crea una nueva forma según el tipo especificado y la guarda en `m_shape`.
-    // @param shapeType Tipo de forma a crear (usamos el enumerador ShapeType).
-    // @return Un puntero a la forma creada (por ejemplo, un `sf::CircleShape`).
+    /**
+     * @brief Crea una nueva forma geométrica según el tipo indicado.
+     *
+     * Asigna la forma creada al puntero `m_shape` para su posterior manipulación.
+     *
+     * @param shapeType El tipo de forma a crear.
+     * @return Puntero a la forma creada (`sf::Shape*`).
+     */
     sf::Shape* createShape(ShapeType shapeType);
 
-    // Actualiza la forma cada frame. Por ahora no hace nada especial.
-    // @param deltaTime El tiempo transcurrido desde la última actualización (usado para cálculos de animación o movimiento).
+    /**
+     * @brief Actualiza el estado de la forma en cada frame.
+     *
+     * Este método permite manejar animaciones o transiciones de la forma.
+     *
+     * @param deltaTime Tiempo transcurrido desde el último frame.
+     */
     void update(float deltaTime) override;
 
-    // Renderiza la forma en la ventana dada. Básicamente, la dibuja en la pantalla.
-    // @param window Referencia a la ventana donde queremos mostrar la forma.
+    /**
+     * @brief Renderiza la forma en la ventana proporcionada.
+     *
+     * Dibuja la forma en pantalla en cada frame.
+     *
+     * @param window Ventana donde se renderiza la forma.
+     */
     void render(Window& window) override;
 
-    // Establece la posición de la forma usando coordenadas `x` y `y`.
-    // @param x Posición en el eje X.
-    // @param y Posición en el eje Y.
+    /**
+     * @brief Establece la posición de la forma con coordenadas X e Y.
+     *
+     * @param x Coordenada X.
+     * @param y Coordenada Y.
+     */
     void setPosition(float x, float y);
 
-    // Otra forma de establecer la posición, pero usando un vector de SFML.
-    // @param position Vector 2D que contiene las coordenadas X e Y.
+    /**
+     * @brief Establece la posición de la forma con un vector 2D.
+     *
+     * @param position Un vector que contiene las coordenadas X e Y.
+     */
     void setPosition(const sf::Vector2f& position);
 
-    // Cambia el color de la forma (por ejemplo, rojo, azul, verde, etc.).
-    // @param color Color de la forma usando `sf::Color`.
+    /**
+     * @brief Cambia el color de la forma.
+     *
+     * @param color El nuevo color de la forma.
+     */
     void setFillColor(const sf::Color& color);
 
-    // Hace que la forma se mueva hacia una posición objetivo con cierta velocidad.
-    // @param targetPosition La posición objetivo a la que la forma debe dirigirse.
-    // @param speed La velocidad con la que se moverá la forma.
-    // @param deltaTime El tiempo transcurrido desde la última actualización (para suavizar el movimiento).
-    // @param range Distancia mínima para detenerse (evita que la forma se pase del objetivo).
-    void Seek(const sf::Vector2f& targetPosition, float speed, float deltaTime, float range);
-
-    // Establece la rotación de la forma en grados.
-    // @param angle Ángulo de rotación en grados.
+    /**
+     * @brief Establece la rotación de la forma en grados.
+     *
+     * @param angle Ángulo de rotación.
+     */
     void setRotation(float angle);
 
-    // Establece la escala de la forma.
-    // @param scl Vector con los valores de escala en X e Y.
+    /**
+     * @brief Establece la escala de la forma en los ejes X e Y.
+     *
+     * @param scl Vector con los valores de escala en X e Y.
+     */
     void setScale(const sf::Vector2f& scl);
 
-    // Devuelve un puntero a la forma creada.
-    // Esto se usa para interactuar directamente con la forma (por ejemplo, cambiar su tamaño o color).
-    // @return Un puntero a la forma (`sf::Shape*`).
-    sf::Shape* getShape()
-    {
-        return m_shape;
-    }
-
-public:
-    sf::Shape* m_shape;  // Puntero a la forma que se está manejando (puede ser un círculo, triángulo, etc.)
+    /**
+     * @brief Obtiene la forma creada.
+     *
+     * @return Puntero a la forma creada (`sf::Shape*`).
+     */
+    sf::Shape* getShape();
 
 private:
-    ShapeType m_shapeType;  // Tipo de forma que maneja esta fábrica (definido en `ShapeType`).
+    sf::Shape* m_shape = nullptr;  ///< Puntero a la forma gestionada por esta fábrica.
+    ShapeType m_shapeType = ShapeType::EMPTY;  ///< Tipo de forma gestionada.
 };

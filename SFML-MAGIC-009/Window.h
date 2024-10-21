@@ -1,68 +1,121 @@
-#pragma once
-#include "Prerequisites.h"
+#pragma once 
+#include "Prerequisites.h"  // Incluye las bibliotecas y dependencias esenciales.
 
-/*
- * Window.h
- * Esta clase gestiona la ventana principal donde se dibujan todos los elementos gráficos del proyecto.
- * Maneja la creación, renderizado y actualización de la ventana de SFML.
- * Básicamente, es la encargada de mantener "vivo" el espacio donde se mostrarán nuestros gráficos.
+/**
+ * @class Window
+ * @brief Clase que gestiona la ventana principal del proyecto.
+ *
+ * Esta clase controla la creación, actualización, renderizado y destrucción
+ * de la ventana utilizando la biblioteca SFML. También maneja el tiempo entre
+ * frames para cálculos precisos y permite manipular la vista de la ventana.
  */
-class Window
-{
+class Window {
 public:
-    // Constructor por defecto (no hace nada especial, pero está aquí por si necesitamos una ventana sin parámetros).
+    /**
+     * @brief Constructor por defecto.
+     *
+     * No realiza ninguna operación especial.
+     */
     Window() = default;
 
-    // Constructor principal que crea una ventana con un tamaño específico y un título personalizado.
-    // @param width Ancho de la ventana.
-    // @param height Altura de la ventana.
-    // @param title Título de la ventana.
+    /**
+     * @brief Constructor parametrizado.
+     *
+     * Crea una ventana con las dimensiones y título especificados.
+     *
+     * @param width Ancho de la ventana.
+     * @param height Altura de la ventana.
+     * @param title Título de la ventana.
+     */
     Window(int width, int height, const std::string& title);
 
-    // Destructor para liberar los recursos de la ventana cuando ya no los necesitamos.
+    /**
+     * @brief Destructor de la clase.
+     *
+     * Libera los recursos utilizados por la ventana.
+     */
     ~Window();
 
-    // Se encarga de manejar los eventos de la ventana (como cerrar, minimizar, mover, etc.).
-    // Básicamente, escucha lo que el usuario hace con la ventana.
+    /**
+     * @brief Maneja los eventos de la ventana.
+     *
+     * Procesa eventos como cerrar, minimizar o mover la ventana.
+     */
     void handleEvents();
 
-    // Limpia la ventana, es decir, borra todo lo que está actualmente en la pantalla.
-    // Por lo general, se usa para preparar el área antes de volver a dibujar todo.
+    /**
+     * @brief Limpia el contenido de la ventana.
+     *
+     * Prepara la ventana para dibujar nuevos elementos en el siguiente frame.
+     */
     void clear();
 
-    // Muestra en la pantalla el contenido que hemos dibujado hasta ahora.
-    // Es como un "flip" que actualiza la ventana con las últimas imágenes.
+    /**
+     * @brief Muestra en pantalla el contenido dibujado.
+     *
+     * Realiza un "flip" para actualizar la ventana con el contenido más reciente.
+     */
     void display();
 
-    // Verifica si la ventana sigue abierta.
-    // @return true si está abierta y podemos dibujar en ella, false si se cerró.
+    /**
+     * @brief Verifica si la ventana sigue abierta.
+     *
+     * @return true si la ventana está abierta, false si se ha cerrado.
+     */
     bool isOpen() const;
 
-    // Dibuja cualquier objeto que pueda ser mostrado en la ventana.
-    // SFML usa `sf::Drawable` como base para todos los objetos que se pueden dibujar.
-    // @param drawable Referencia a un objeto que SFML puede dibujar (como un círculo, rectángulo, etc.).
+    /**
+     * @brief Dibuja un objeto en la ventana.
+     *
+     * Recibe cualquier objeto que herede de `sf::Drawable` para dibujarlo.
+     *
+     * @param drawable Objeto a dibujar (como un círculo o rectángulo).
+     */
     void draw(const sf::Drawable& drawable);
 
-    // Devuelve el puntero a la ventana interna de SFML (la verdadera ventana que se muestra en pantalla).
-    // Esto es útil si necesitamos interactuar directamente con la ventana de SFML.
-    // @return Puntero al objeto `sf::RenderWindow`.
+    /**
+     * @brief Obtiene el puntero a la ventana interna de SFML.
+     *
+     * Esto permite interactuar directamente con la ventana de SFML.
+     *
+     * @return Un puntero al objeto `sf::RenderWindow`.
+     */
     sf::RenderWindow* getWindow();
 
-    // Inicializa la ventana y la configura con los parámetros que le hemos pasado.
-    // Esto es lo primero que se debe hacer para crear la ventana antes de usarla.
+    /**
+     * @brief Inicializa la ventana.
+     *
+     * Realiza la configuración inicial necesaria para mostrar la ventana.
+     */
     void init();
 
-    // Actualiza la ventana cada frame. 
-    // Aquí se podrían manejar cosas como animaciones, entradas del usuario, etc.
-    void updapte();  // Nota: Parece que `updapte` está mal escrito. Debe ser `update`.
+    /**
+     * @brief Actualiza la lógica de la ventana cada frame.
+     *
+     * Usa el `deltaTime` para calcular el tiempo transcurrido entre frames
+     * y actualizar animaciones o movimientos.
+     */
+    void update();
 
-    // Renderiza el contenido de la ventana (dibuja todo lo que se necesita ver).
+    /**
+     * @brief Renderiza el contenido de la ventana.
+     *
+     * Dibuja todos los elementos que deben mostrarse en la ventana.
+     */
     void render();
 
-    // Libera todos los recursos de la ventana. 
-    // Útil cuando queremos cerrar la aplicación y asegurarnos de que no queden cosas pendientes.
+    /**
+     * @brief Destruye la ventana y libera los recursos.
+     *
+     * Llama a las funciones necesarias para cerrar la ventana correctamente.
+     */
     void destroy();
 
 private:
-    sf::RenderWindow* m_window;  // La ventana de SFML donde realmente se muestran nuestros gráficos.
+    sf::RenderWindow* m_window;  ///< Puntero a la ventana de SFML donde se dibujan los elementos.
+    sf::View m_view;  ///< Vista de la ventana para manipular la cámara o perspectiva.
+
+public:
+    sf::Time deltaTime;  ///< Tiempo transcurrido entre frames.
+    sf::Clock clock;  ///< Reloj para medir el tiempo entre frames.
 };
