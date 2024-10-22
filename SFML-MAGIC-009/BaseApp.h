@@ -82,6 +82,25 @@ private:
     EngineUtilities::TSharedPointer<Actor> Circle;    ///< Actor que representa el círculo.
     EngineUtilities::TSharedPointer<Actor> Track;     ///< Actor que representa la pista.
 
+    // Actores para las cabezas de los personajes.
+    EngineUtilities::TSharedPointer<Actor> MarioHead;
+    EngineUtilities::TSharedPointer<Actor> LuigiHead;
+    EngineUtilities::TSharedPointer<Actor> PeachHead;
+    EngineUtilities::TSharedPointer<Actor> ToadHead;
+    EngineUtilities::TSharedPointer<Actor> YoshiHead;
+    EngineUtilities::TSharedPointer<Actor> DonkeyKongHead;
+    EngineUtilities::TSharedPointer<Actor> WarioHead;
+
+    // Texturas para los personajes.
+    sf::Texture texture;    ///< Textura para la pista.
+    sf::Texture Mario;      ///< Textura para Mario.
+    sf::Texture Luigi;      ///< Textura para Luigi.
+    sf::Texture Peach;      ///< Textura para Peach.
+    sf::Texture Toad;       ///< Textura para Toad.
+    sf::Texture Yoshi;      ///< Textura para Yoshi.
+    sf::Texture DonkeyKong; ///< Textura para DonkeyKong.
+    sf::Texture Wario;      ///< Textura para Wario.
+
     int currentWaypoint = 0;  ///< Índice del waypoint actual en la trayectoria del círculo.
     bool isFollowingMouse = false;  ///< Indica si el círculo está siguiendo al ratón.
 
@@ -95,6 +114,4 @@ private:
         {70.0f, 120.0f}, {70.0f, 450.0f}, {400.0f, 350.0f},
         {550.0f, 500.0f}, {650.0f, 550.0f}, {720.0f, 450.0f}
     };
-
-    sf::Texture texture;  ///< Textura para renderizar los actores o la pista.
 };
